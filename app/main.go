@@ -58,6 +58,9 @@ func main() {
 		Bind: []interface{}{
 			app, bondsController,
 		},
+		SingleInstanceLock: &options.SingleInstanceLock{
+            UniqueId: "com.xcraitex.bondtracker", // любое уникальное имя
+        },
 		// Windows platform specific options
 		Windows: &windows.Options{
 			WebviewIsTransparent: true,
