@@ -34,3 +34,23 @@ func (r *BondsRepo) Get() []entities.Bond {
 
 	return bonds
 }
+
+func (r *BondsRepo) Update(bond entities.Bond) bool {
+	_, err := r.Session.Exec("UPDATE bonds SET name = ?, nominal = ?, coupon = ?, months = ?, day = ?, quantity = ? WHERE id = ?", bond.Name, bond.Nominal, bond.Coupon, bond.Months, bond.Day, bond.Quantity, bond.Id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return true
+}
+
+func (r *BondsRepo) Delete(id int16) bool {
+	_, err := r.Session.Exec("DELETE FROM bonds WHERE id = ?", id)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return true 
+}

@@ -18,6 +18,14 @@ func (r *BondsController) GetBonds() []entities.Bond {
 	return r.Repository.Get()
 }
 
+func (r *BondsController) UpdateBond(bond entities.Bond) bool {
+	return r.Repository.Update(bond)
+}
+
+func (r *BondsController) DeleteBond(id int16) bool {
+	return r.Repository.Delete(id)
+}
+
 func CreateBondsController() *BondsController {
 
 	repo := &repository.BondsRepo{Session: database.Connect()}

@@ -1,13 +1,22 @@
 "use client";
-import FinanceInfoBLock from "@/pages/bonds-tracker/widgets";
-import Heading from "@/shared/heading";
+import FinanceInfoBLock from "@/widgets/info.block";
 import { useEffect, useState } from "react";
-import { entities } from "../../wailsjs/go/models";
-import { GetBonds, InsertBond } from "../../wailsjs/go/bonds/BondsController";
+import { entities } from "_/go/models";
+import { DeleteBond, GetBonds, InsertBond, UpdateBond } from "_/go/bonds/BondsController";
 import BondsTable from "@/widgets/bonds.table";
 import BondModal from "@/widgets/bond.modal";
 
+// ICONS
+import { FaPlus } from "react-icons/fa";
+import { MdAccountBalanceWallet } from "react-icons/md";
+import { IoCalendarNumberSharp } from "react-icons/io5";
+import { IoDocumentTextSharp } from "react-icons/io5";
+import { currency } from "@/config";
+import { useAlerts } from "@/features/alerts/AlertsContext";
+
 export default function Home() {
+  const { addAlert } = useAlerts();
+
   const [bonds, setBonds] = useState<entities.Bond[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBond, setEditingBond] = useState<entities.Bond | null>(null);
@@ -20,18 +29,25 @@ export default function Home() {
 
     if (err != null) return;
 
+    addAlert("Облигация успешно создана!", "success");
+
     setBonds([...bonds, newBond]);
     setIsModalOpen(false);
   };
 
+  const fetchData = async () => {
+    const bonds = await GetBonds();
+    setBonds(bonds);
+  };
+
   const handleEditBond = async (updatedBond: entities.Bond) => {
-    // const response = await api.edit_bond(updatedBond);
+    await UpdateBond(updatedBond);
 
-    // if (response.status != 200) return;
+    addAlert("Облигация успешно изменена!", "success");
 
-    setBonds(bonds.map((bond) => (bond.Id === updatedBond.Id ? updatedBond : bond)));
+    fetchData();
+
     setIsModalOpen(false);
-
     setEditingBond(null);
   };
 
@@ -40,14 +56,12 @@ export default function Home() {
     const isConfirmed = confirm("Вы действительно хотите удалить облигацию?");
 
     if (!isConfirmed) return;
+    const ok = await DeleteBond(id);
 
-    console.log(id);
+    if (!ok) addAlert("Произошла ошибка при удалении облигации!", "error");
+    addAlert("Облигация успешно удалена!", "success");
 
-    // const response = await api.delete_bond(id);
-
-    // if (response.status != 200) return;
-
-    // setBonds(bonds.filter((bond) => bond.id !== id));
+    fetchData();
   };
 
   const openEditModal = (bond: entities.Bond) => {
@@ -66,7 +80,11 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setYearlyIncome(bonds.reduce((sum, bond) => sum + bond.Coupon * bond.Quantity * bond.Months.length, 0));
+    if (bonds.length === 0) {
+      setYearlyIncome(0);
+      setTotalBalance(0);
+    }
+    setYearlyIncome(bonds.reduce((sum, bond) => sum + bond.Coupon * bond.Quantity * bond.Months.split(",").length, 0));
     setTotalBalance(bonds.reduce((sum, bond) => sum + bond.Nominal * bond.Quantity, 0));
   }, [bonds]);
 
@@ -81,48 +99,51 @@ export default function Home() {
     <div className="py-6">
       <div className="max-w-7xl mx-auto">
         {/* Заголовок и статистика */}
-        <div className="mb-8">
-          <Heading>Учёт облигаций</Heading>
+        <div>
+          {/* <Heading>Учёт облигаций</Heading> */}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <FinanceInfoBLock
               title="Общий баланс"
-              condition={totalBalance}
-              value1={`${totalBalance.toLocaleString("ru-RU")} BYN`}
+              condition={true}
+              value1={`${totalBalance.toLocaleString("ru-RU")} ${currency}`}
               value2={`${(totalBalance * 0.337).toLocaleString("ru-RU")} $`}
               color="text-white"
+              image={MdAccountBalanceWallet}
             />
 
             <FinanceInfoBLock
               title="Годовой доход"
-              condition={yearlyIncome}
-              value1={`${yearlyIncome.toLocaleString("ru-RU")} BYN`}
-              value2={`${(yearlyIncome / 12).toLocaleString("ru-RU")} $`}
+              condition={true}
+              value1={`${yearlyIncome.toLocaleString("ru-RU")} ${currency}`}
+              value2={`${(yearlyIncome / 12).toLocaleString("ru-RU")} ${currency} / мес`}
               color="text-green-400"
+              image={IoCalendarNumberSharp}
             />
 
             <FinanceInfoBLock
               title="Облигаций"
-              condition={bonds.length}
+              condition={true}
               value1={`${bonds
                 .map((bond) => bond.Quantity)
                 .reduce((a, b) => a + b, 0)
                 .toLocaleString("ru-RU")} шт`}
               value2={`${bonds.length} выпусков`}
               color="text-blue-400"
+              image={IoDocumentTextSharp}
             />
           </div>
         </div>
 
         {/* Таблица и кнопка добавления */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-white">Мои облигации</h2>
+        <div className="bg-radial to-background border border-border rounded-xl px-6 py-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold text-white">Облигации</h2>
             <button
               onClick={openAddModal}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium border border-blue-500"
+              className="relative group flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
             >
-              + Добавить облигацию
+              <FaPlus className="group-hover:rotate-90 duration-300" /> Добавить облигацию
             </button>
           </div>
 

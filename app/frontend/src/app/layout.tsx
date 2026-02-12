@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import DragHeader from "@/widgets/drag.header";
 import Header from "@/widgets/header";
+import { AlertsProvider } from "@/features/alerts/AlertsProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,10 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
-          <DragHeader />
+        <div className="min-h-screen bg-gradient-to-br from-[#070521] to-black">
           <Header />
-          <div className="px-10">{children}</div>
+          <AlertsProvider>
+            <div className="px-10">{children}</div>
+          </AlertsProvider>
         </div>
       </body>
     </html>

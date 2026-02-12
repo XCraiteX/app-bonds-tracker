@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { entities } from "../../wailsjs/go/models";
+import { currency } from "@/config";
 
 interface CalendarGridProps {
   bonds: entities.Bond[];
@@ -65,17 +66,17 @@ export default function CalendarGrid({ bonds, year }: CalendarGridProps) {
           <div
             key={monthIndex}
             className={`
-              bg-gray-900 border rounded-xl p-5 transition-all relative
+              bg-radial to-background border rounded-xl p-5 transition-all relative
               ${
                 isCurrentMonth
-                  ? "border-green-500 shadow-2xl shadow-green-500/20 ring-2 ring-green-500/30"
-                  : "border-gray-800 hover:border-gray-700"
+                  ? "border-green-500 shadow-md shadow-green-600/40 shadow-green-500/20"
+                  : "border-border hover:border-gray-800"
               }
             `}
           >
             {/* Индикатор текущего месяца */}
             {isCurrentMonth && (
-              <div className="absolute -top-2 -right-2">
+              <div className="absolute -top-3">
                 <div className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">Сейчас</div>
               </div>
             )}
@@ -92,7 +93,7 @@ export default function CalendarGrid({ bonds, year }: CalendarGridProps) {
               </h3>
               {totalPayout > 0 && (
                 <span className="bg-green-900/50 text-green-400 px-3 py-1 rounded-full text-sm font-medium border border-green-800">
-                  +{totalPayout.toLocaleString("ru-RU")} BYN
+                  +{totalPayout.toLocaleString("ru-RU")} {currency}
                 </span>
               )}
             </div>
@@ -104,7 +105,6 @@ export default function CalendarGrid({ bonds, year }: CalendarGridProps) {
                   {day}
                 </div>
               ))}
-
               {days.map((day) => {
                 const isPayoutDay = payoutDays.includes(day);
                 return (
@@ -129,23 +129,25 @@ export default function CalendarGrid({ bonds, year }: CalendarGridProps) {
 
             {/* Список облигаций с выплатами в этом месяце */}
             {monthBonds.length > 0 && (
-              <div className="border-t border-gray-800 pt-4">
+              <div className="border-t border-border pt-4">
                 <h4 className="text-gray-400 text-sm font-medium mb-3">Выплаты в этом месяце:</h4>
                 <div className="space-y-2">
-                  {monthBonds.map((bond) => (
-                    <div
-                      key={bond.Id}
-                      className="flex justify-between items-center p-2 rounded-lg bg-gray-800/50 border border-gray-700"
-                    >
-                      <div>
-                        <div className="text-white font-mono text-sm">{bond.Name}</div>
-                        <div className="text-gray-400 text-xs">{bond.Day} число</div>
+                  {monthBonds
+                    .filter((b) => b.Coupon != 0)
+                    .map((bond) => (
+                      <div
+                        key={bond.Id}
+                        className="flex justify-between items-center py-2 px-4 rounded-lg bg-background border-y border-border"
+                      >
+                        <div>
+                          <div className="text-white font-mono text-sm">{bond.Name}</div>
+                          <div className="text-gray-400 text-xs">{bond.Day} число</div>
+                        </div>
+                        <div className="text-green-400 font-semibold">
+                          +{(bond.Coupon * bond.Quantity).toLocaleString("ru-RU")} {currency}
+                        </div>
                       </div>
-                      <div className="text-green-400 font-semibold">
-                        +{(bond.Coupon * bond.Quantity).toLocaleString("ru-RU")} BYN
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             )}

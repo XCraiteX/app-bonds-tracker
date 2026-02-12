@@ -3,12 +3,18 @@ import { useEffect, useState } from "react";
 import { entities } from "../../../wailsjs/go/models";
 import CalendarGrid from "@/widgets/calendar.grid";
 import { GetBonds } from "../../../wailsjs/go/bonds/BondsController";
+import { IoCalendarNumberSharp } from "react-icons/io5";
+import Heading from "@/shared/heading";
+import { currency } from "@/config";
 
 export default function CalendarPage() {
   const [bonds, setBonds] = useState<entities.Bond[]>([]); // ← Пустой массив, без тестовых данных
 
   // Считаем общую сумму выплат за год
-  const totalYearlyPayout = bonds.reduce((sum, bond) => sum + bond.Coupon * bond.Quantity * bond.Months.length, 0);
+  const totalYearlyPayout = bonds.reduce(
+    (sum, bond) => sum + bond.Coupon * bond.Quantity * bond.Months.split(",").length,
+    0,
+  );
 
   useEffect(() => {
     GetBonds().then((b) => {
@@ -18,23 +24,31 @@ export default function CalendarPage() {
   }, []);
 
   return (
-    <div className="py-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="py-5">
+      <div className="mx-auto">
         {/* Заголовок и статистика */}
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 gap-4">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
-              Календарь выплат
-            </h1>
-            <p className="text-gray-400">Все выплаты по вашим облигациям</p>
+            <Heading>Календарь выплат</Heading>
+            <p className="text-secondary">Все выплаты по вашим облигациям</p>
           </div>
 
           <div className="flex items-center space-x-4">
             {/* Общая статистика года */}
             {totalYearlyPayout > 0 && (
-              <div className="bg-gray-900 border border-gray-800 rounded-xl px-4 py-3">
-                <div className="text-gray-400 text-sm">Выплаты за год</div>
-                <div className="text-green-400 font-bold text-xl">+{totalYearlyPayout.toLocaleString("ru-RU")} BYN</div>
+              <div className="bg-background border border-border rounded-xl py-4 px-6 flex items-center gap-6">
+                <div className="flex items-center justify-center rotate-20 rotate-x-30 -rotate-y-20">
+                  <div className="absolute shadow-[0_0_16px_24px] shadow-blue-900 rounded-full"></div>
+                  <IoCalendarNumberSharp className="text-white/70 text-5xl z-10" />
+                  <IoCalendarNumberSharp className="text-blue-900 text-5xl z-5 absolute translate-y-1 translate-x-1" />
+                </div>
+
+                <div>
+                  <div className="text-gray-400 text-sm">Выплаты за год</div>
+                  <div className="text-green-400 font-bold text-xl">
+                    +{totalYearlyPayout.toLocaleString("ru-RU")} {currency}
+                  </div>
+                </div>
               </div>
             )}
           </div>

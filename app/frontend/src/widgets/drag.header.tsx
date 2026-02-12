@@ -1,7 +1,6 @@
 "use client";
 import { WindowMinimise, Quit } from "../../wailsjs/runtime";
 import { IoClose } from "react-icons/io5";
-import { MdMinimize } from "react-icons/md";
 
 export default function DragHeader() {
   return (
