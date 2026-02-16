@@ -13,7 +13,7 @@
 
 ## Установка
 
-1. Если вы в Беларуси и ваша валюта BYN, скачайте релиз справа на GitHub и пользуйтесь.
+1. Если вы в Беларуси и ваша валюта BYN, скачайте релиз справа на GitHub во вкладке Release и пользуйтесь.
 2. Если ваша валюта другая - **клонируйте репозиторий**
 
 ```bash
@@ -27,10 +27,27 @@ git clone github.com/XCraiteX/app-bonds-tracker
 export const currency = "BYN";
 ```
 
-4. Если ваша валюта $ - замените валюту конвертации и формулу. Файл `page.tsx:98`
+4. Если ваша валюта $ - замените альтеративную валюту и ссылку на получения курса. Либо можно просто установить валюту и сделать фиксированную конвертацию
+
+```ts
+export const altCurrency = "$"; // Альтернативная валюта
+export const altCurrencyLink = "https://api.nbrb.by/exrates/rates/431?periodicity=0"; // Ссылка на получение курса
+```
+
+> Если вы меняете ссылку на получение ExchangeRate, поменяйте реализацию в `page:85`
 
 ```tsx
-value2={`${(totalBalance * 0.337).toLocaleString("ru-RU")} $`}
+useEffect(() => {
+  axios.get(altCurrencyLink).then((res) => {
+    setAltCurrencyRate(res.data.Cur_OfficialRate); // Тут поменять получаемое значение из JSON
+  });
+}, []);
+```
+
+> Либо можете удалить строчки реализации на `page:85-89` и поставить в `page:119` фиксированную формулу.
+
+```tsx
+value2={`${(totalBalance * 0.337).toLocaleString("ru-RU")} $`} // В данном примере формула balance * 0.337
 ```
 
 5. Установите CLI `Wails`, если его у вас нет

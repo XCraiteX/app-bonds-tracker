@@ -11,8 +11,9 @@ import { FaPlus } from "react-icons/fa";
 import { MdAccountBalanceWallet } from "react-icons/md";
 import { IoCalendarNumberSharp } from "react-icons/io5";
 import { IoDocumentTextSharp } from "react-icons/io5";
-import { currency } from "@/config";
+import { altCurrency, altCurrencyLink, currency } from "@/config";
 import { useAlerts } from "@/features/alerts/AlertsContext";
+import axios from "axios";
 
 export default function Home() {
   const { addAlert } = useAlerts();
@@ -23,6 +24,7 @@ export default function Home() {
 
   const [totalBalance, setTotalBalance] = useState(0);
   const [yearlyIncome, setYearlyIncome] = useState(0);
+  const [altCurrencyRate, setAltCurrencyRate] = useState(0);
 
   const handleAddBond = async (newBond: entities.Bond) => {
     const err = await InsertBond(newBond);
@@ -79,6 +81,13 @@ export default function Home() {
     setEditingBond(null);
   };
 
+  // ALT CURRENCY RATE
+  useEffect(() => {
+    axios.get(altCurrencyLink).then((res) => {
+      setAltCurrencyRate(res.data.Cur_OfficialRate);
+    });
+  }, []);
+
   useEffect(() => {
     if (bonds.length === 0) {
       setYearlyIncome(0);
@@ -107,7 +116,7 @@ export default function Home() {
               title="Общий баланс"
               condition={true}
               value1={`${totalBalance.toLocaleString("ru-RU")} ${currency}`}
-              value2={`${(totalBalance * 0.337).toLocaleString("ru-RU")} $`}
+              value2={`${(totalBalance * (1 / altCurrencyRate)).toLocaleString("ru-RU")} ${altCurrency}`}
               color="text-white"
               image={MdAccountBalanceWallet}
             />

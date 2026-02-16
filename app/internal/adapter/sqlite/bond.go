@@ -52,5 +52,5 @@ func (r *BondsRepo) Delete(id int16) bool {
 		panic(err)
 	}
 
-	return true 
+	return true
 }
