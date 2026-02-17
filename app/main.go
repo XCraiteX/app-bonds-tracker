@@ -32,12 +32,12 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:             "Bonds Tracker - Грамотный контроль инвестиций",
-		Width:             1520,
-		Height:            780,
-		MinWidth:          1520,
-		MinHeight:         780,
-		MaxWidth:          1280,
-		MaxHeight:         780,
+		Width:             1320,
+		Height:            820,
+		// MinWidth:          1520,
+		// MinHeight:         780,
+		// MaxWidth:          1280,
+		// MaxHeight:         780,
 		DisableResize:     true,
 		Fullscreen:        false,
 		Frameless:         true,
@@ -65,7 +65,9 @@ func main() {
 		Windows: &windows.Options{
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
+			DisableFramelessWindowDecorations: true,
 			DisableWindowIcon:    false,
+			BackdropType: windows.None,
 			// DisableFramelessWindowDecorations: false,
 			WebviewUserDataPath: "",
 			ZoomFactor:          1.0,

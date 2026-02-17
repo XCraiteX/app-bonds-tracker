@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { entities } from "../../../wailsjs/go/models";
-import CalendarGrid from "@/widgets/calendar.grid";
+import CalendarGrid from "@/widgets/calendar/calendar.grid";
 import { GetBonds } from "../../../wailsjs/go/bonds/BondsController";
 import { IoCalendarNumberSharp } from "react-icons/io5";
 import Heading from "@/shared/heading";
@@ -38,14 +38,14 @@ export default function CalendarPage() {
             {totalYearlyPayout > 0 && (
               <div className="bg-background border border-border rounded-xl py-4 px-6 flex items-center gap-6">
                 <div className="flex items-center justify-center rotate-20 rotate-x-30 -rotate-y-20">
-                  <div className="absolute shadow-[0_0_16px_24px] shadow-blue-900 rounded-full"></div>
+                  <div className="absolute shadow-[0_0_16px_24px] glass:shadow-[0_0_16px_22px] shadow-blue-900 glass:shadow-blue-500/60 rounded-full"></div>
                   <IoCalendarNumberSharp className="text-white/70 text-5xl z-10" />
-                  <IoCalendarNumberSharp className="text-blue-900 text-5xl z-5 absolute translate-y-1 translate-x-1" />
+                  <IoCalendarNumberSharp className="text-blue-900 glass:text-blue-600/40 text-5xl z-5 absolute translate-y-1 translate-x-1" />
                 </div>
 
                 <div>
                   <div className="text-gray-400 text-sm">Выплаты за год</div>
-                  <div className="text-green-400 font-bold text-xl">
+                  <div className="text-accent font-bold text-xl">
                     +{totalYearlyPayout.toLocaleString("ru-RU")} {currency}
                   </div>
                 </div>

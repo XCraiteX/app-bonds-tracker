@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/widgets/header";
 import { AlertsProvider } from "@/features/alerts/AlertsProvider";
+import Background from "@/widgets/background";
+import ThemeProviders from "@/features/theme/ThemeProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,13 +29,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-[#070521] to-black">
-          <Header />
-          <AlertsProvider>
-            <div className="px-10">{children}</div>
-          </AlertsProvider>
-        </div>
+        <ThemeProviders>
+          <div className="min-h-screen bg-gradient-to-br from-[#070521] to-black glass:from-white/0 glass:to-white/0">
+            {/* <Background /> */}
+            <Header />
+            <AlertsProvider>
+              <div className="padx h-full overflow-hidden">{children}</div>
+            </AlertsProvider>
+          </div>
+        </ThemeProviders>
       </body>
     </html>
   );

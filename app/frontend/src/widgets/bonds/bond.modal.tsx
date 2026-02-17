@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { entities } from "../../wailsjs/go/models";
+import { entities } from "_/go/models";
 import { AnimatePresence, motion } from "motion/react";
 
 interface BondModalProps {
@@ -106,9 +106,9 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond }: 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 backdrop-blur-[4px]"
+          className="fixed inset-0 bg-black/40 glass:bg-black/60 flex items-center justify-center p-4 z-50 backdrop-blur-[6px]"
         >
-          <div className="bg-background border border-border rounded-xl p-6 w-full max-w-md">
+          <div className="bg-background glass:bg-[#fff]/5 border border-border rounded-xl p-6 w-full max-w-md">
             <h2 className="text-xl font-semibold text-white mb-4">{title}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">

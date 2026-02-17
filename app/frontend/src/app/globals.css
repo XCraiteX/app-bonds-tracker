@@ -1,24 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&display=swap");
 @import "tailwindcss";
+
+@custom-variant glass (&:where(.glass, .glass *));
 
 :root {
   --background: rgba(17, 24, 39, 0.6);
-  /* --border: rgba(31, 41, 55, 0.6); */
   --border: rgba(25, 60, 184, 0.2);
+  --accent: #24ec56;
+  --muted: #9ca3af;
+  --secondary: #9ca3af;
+  --foreground: #ffffff;
+}
+
+:root.glass {
+  --background: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #24ec56;
+  --muted: #9ca3af;
   --secondary: #9ca3af;
   --foreground: #fff;
 }
 
-@theme {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
   --color-secondary: var(--secondary);
   --color-border: var(--border);
 }
 
 body {
+  background-color: rgba(255, 255, 255, 0.02);
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Jost", "Noto Sans JP", elvetica, sans-serif;
+}
+
+.padx {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .drag {
@@ -54,4 +74,9 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+/* SELECTION */
+::selection {
+  @apply bg-white/10;
 }

@@ -3,8 +3,8 @@ import FinanceInfoBLock from "@/widgets/info.block";
 import { useEffect, useState } from "react";
 import { entities } from "_/go/models";
 import { DeleteBond, GetBonds, InsertBond, UpdateBond } from "_/go/bonds/BondsController";
-import BondsTable from "@/widgets/bonds.table";
-import BondModal from "@/widgets/bond.modal";
+import BondsTable from "@/widgets/bonds/bonds.table";
+import axios from "axios";
 
 // ICONS
 import { FaPlus } from "react-icons/fa";
@@ -13,7 +13,11 @@ import { IoCalendarNumberSharp } from "react-icons/io5";
 import { IoDocumentTextSharp } from "react-icons/io5";
 import { altCurrency, altCurrencyLink, currency } from "@/config";
 import { useAlerts } from "@/features/alerts/AlertsContext";
-import axios from "axios";
+import { IoMdInformationCircle } from "react-icons/io";
+import { getNearestPayout } from "@/features/payments";
+import { getDaysInMonth, getMonthIndex, months } from "@/features/calendar/monthes";
+import PaymentNotify from "@/widgets/payment.notify";
+import BondModal from "@/widgets/bonds/bond.modal";
 
 export default function Home() {
   const { addAlert } = useAlerts();
@@ -126,7 +130,7 @@ export default function Home() {
               condition={true}
               value1={`${yearlyIncome.toLocaleString("ru-RU")} ${currency}`}
               value2={`${(yearlyIncome / 12).toLocaleString("ru-RU")} ${currency} / мес`}
-              color="text-green-400"
+              color="text-accent"
               image={IoCalendarNumberSharp}
             />
 
@@ -143,6 +147,8 @@ export default function Home() {
             />
           </div>
         </div>
+
+        <PaymentNotify bonds={bonds} />
 
         {/* Таблица и кнопка добавления */}
         <div className="bg-radial to-background border border-border rounded-xl px-6 py-4">

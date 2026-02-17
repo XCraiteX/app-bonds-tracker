@@ -1,4 +1,4 @@
-import { entities } from "../../wailsjs/go/models";
+import { entities } from "_/go/models";
 
 // ICONS
 import { MdEdit } from "react-icons/md";
@@ -36,24 +36,16 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
       <table className="w-full">
         <thead>
           <tr className="border-border">
-            <th className="text-left p-4 text-gray-400 font-medium">Тикер</th>
-            <th className="text-left p-4 text-gray-400 font-medium">Номинал</th>
-            <th className="text-left p-4 text-gray-400 font-medium">Купон</th>
-            <th className="text-left p-4 text-gray-400 font-medium">Месяцы выплат</th>
-            <th className="text-left p-4 text-gray-400 font-medium">День</th>
-            <th
-              className="text-left p-4 text-gray-400 font-med
-            ium"
-            >
-              Кол-во
-            </th>
-            <th className="text-left p-4 text-gray-400 font-medium">Год. доход</th>
-            <th className="text-left p-4 text-gray-400 font-medium"></th>
+            {["Тикер", "Номинал", "Купон", "Месяц выплаты", "День", "Кол-во", "Год. доход", ""].map((th, i) => (
+              <th key={i} className="text-left p-4 text-gray-400 font-medium">
+                {th}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {bonds.map((bond) => (
-            <tr key={bond.Id} className="border-t border-blue-950/30 hover:bg-blue-950/25">
+            <tr key={bond.Id} className="border-t border-border/60 hover:bg-blue-950/25 glass:hover:bg-white/5">
               <td className="p-4">
                 <span className="font-mono text-blue-400">{bond.Name}</span>
               </td>
@@ -71,7 +63,10 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
                     bond.Months.split(",")
                       .map((m) => Number(m))
                       .map((month) => (
-                        <span key={month} className="px-2 py-1 bg-blue-900/20 rounded text-xs border border-border">
+                        <span
+                          key={month}
+                          className="px-2 py-1 bg-blue-900/20 glass:bg-white/10 rounded text-xs border border-border"
+                        >
                           {months[month]}
                         </span>
                       ))
@@ -82,7 +77,7 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
               </td>
               <td className="p-4 text-center">{bond.Day}</td>
               <td className="p-4 text-center">{bond.Quantity}</td>
-              <td className="p-4 text-green-400 font-semibold">
+              <td className="p-4 text-accent font-semibold">
                 +{getTotalPayoutPerYear(bond).toLocaleString("ru-RU")} {currency}
               </td>
               <td className="p-4 text-lg">
