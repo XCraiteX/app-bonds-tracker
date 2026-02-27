@@ -4,13 +4,14 @@ import { AnimatePresence, motion } from "motion/react";
 
 interface BondModalProps {
   isOpen: boolean;
+  portfolioId?: number;
   onClose: () => void;
   onAdd: (bond: entities.Bond) => void;
   onEdit?: (bond: entities.Bond) => void; // Новая функция для редактирования
   editBond?: entities.Bond | null; // Облигация для редактирования
 }
 
-export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond }: BondModalProps) {
+export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond, portfolioId }: BondModalProps) {
   const [formData, setFormData] = useState<entities.Bond>({
     Name: "",
     Nominal: 0,
@@ -71,8 +72,10 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond }: 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const bondData = {
+    const bondData: entities.Bond = {
       ...formData,
+      Id: Number(Math.random().toString(36).substr(2, 9)),
+      Portfolio: portfolioId ? portfolioId : 0,
       Months: selectedMonths.join(","),
     };
 
@@ -86,7 +89,7 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond }: 
       // Добавление новой облигации
       const newBond: entities.Bond = {
         ...bondData,
-        Id: Number(Math.random().toString(36).substr(2, 9)),
+        // Id: Number(Math.random().toString(36).substr(2, 9)),
         Months: selectedMonths.join(","),
       };
       onAdd(newBond);

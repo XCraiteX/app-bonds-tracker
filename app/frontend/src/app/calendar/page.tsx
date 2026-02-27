@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import { entities } from "../../../wailsjs/go/models";
 import CalendarGrid from "@/widgets/calendar/calendar.grid";
-import { GetBonds } from "../../../wailsjs/go/bonds/BondsController";
 import { IoCalendarNumberSharp } from "react-icons/io5";
 import Heading from "@/shared/heading";
 import { currency } from "@/config";
+import { GetBonds } from "_/go/controller/BondsController";
 
 export default function CalendarPage() {
   const [bonds, setBonds] = useState<entities.Bond[]>([]); // ← Пустой массив, без тестовых данных

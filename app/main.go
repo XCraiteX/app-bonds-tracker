@@ -2,7 +2,7 @@ package main
 
 import (
 	database "app/internal"
-	bonds "app/internal/controller"
+	"app/internal/controller"
 	"embed"
 	"log"
 
@@ -24,7 +24,8 @@ func main() {
 
 	database.InitSchema()
 
-	bondsController := bonds.CreateBondsController()
+	bondsController := controller.CreateBondsController()
+	portfolionController := controller.CreatePortfoliosController()
 
 	// Create an instance of the app structure
 	app := NewApp()
@@ -56,7 +57,7 @@ func main() {
 		OnShutdown:       app.shutdown,
 		WindowStartState: options.Normal,
 		Bind: []interface{}{
-			app, bondsController,
+			app, bondsController, portfolionController,
 		},
 		SingleInstanceLock: &options.SingleInstanceLock{
 			UniqueId: "com.xcraitex.bondtracker", // любое уникальное имя

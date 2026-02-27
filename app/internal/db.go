@@ -21,8 +21,14 @@ func InitSchema() {
 	db := Connect()
 
 	db.Exec(`
+	CREATE TABLE IF NOT EXISTS portfolios (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		title TEXT NOT NULL
+	)`)
+	db.Exec(`
 	CREATE TABLE IF NOT EXISTS bonds (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		portfolio INTEGER REFERENCES portfolios (id),
 		name TEXT NOT NULL,
 		nominal REAL NOT NULL,
 		coupon REAL NOT NULL,

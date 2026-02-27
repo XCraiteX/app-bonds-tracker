@@ -32,12 +32,12 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
   }
 
   return (
-    <div className="overflow-x-auto ">
+    <div className="overflow-x-auto border-t mt-2 border-border">
       <table className="w-full">
         <thead>
           <tr className="border-border">
-            {["Тикер", "Номинал", "Купон", "Месяц выплаты", "День", "Кол-во", "Год. доход", ""].map((th, i) => (
-              <th key={i} className="text-left p-4 text-gray-400 font-medium">
+            {["Тикер", "Номинал", "Купон", "Месяц выплаты", "День", "Кол-во", "%", "Год. доход", ""].map((th, i) => (
+              <th key={i} className="text-left p-3 text-gray-400 font-medium">
                 {th}
               </th>
             ))}
@@ -46,16 +46,16 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
         <tbody>
           {bonds.map((bond) => (
             <tr key={bond.Id} className="border-t border-border/60 hover:bg-blue-950/25 glass:hover:bg-white/5">
-              <td className="p-4">
+              <td className="p-3">
                 <span className="font-mono text-blue-400">{bond.Name}</span>
               </td>
-              <td className="p-4">
+              <td className="p-3">
                 {bond.Nominal.toLocaleString("ru-RU")} {currency}
               </td>
-              <td className="p-4">
+              <td className="p-3">
                 {bond.Coupon.toLocaleString("ru-RU")} {currency}
               </td>
-              <td className="p-4">
+              <td className="p-3">
                 <div className="flex gap-1">
                   {bond.Months.split(",").length === 1 ? (
                     <span className="text-secondary"></span>
@@ -75,12 +75,15 @@ export default function BondsTable({ bonds, onDelete, onEdit }: BondsTableProps)
                   )}
                 </div>
               </td>
-              <td className="p-4 text-center">{bond.Day}</td>
-              <td className="p-4 text-center">{bond.Quantity}</td>
-              <td className="p-4 text-accent font-semibold">
+              <td className="p-3 text-center">{bond.Day}</td>
+              <td className="p-3 text-center">{bond.Quantity}</td>
+              <td className="p-3 text-accent font-semibold">
+                {(((bond.Coupon * bond.Months.split(",").length) / bond.Nominal) * 100).toFixed(2)}%
+              </td>
+              <td className="p-3 text-accent font-semibold">
                 +{getTotalPayoutPerYear(bond).toLocaleString("ru-RU")} {currency}
               </td>
-              <td className="p-4 text-lg">
+              <td className="p-3 text-lg">
                 <div className="flex gap-4 items-center">
                   <MdEdit className="hover:scale-105 hover:text-blue-600" onClick={() => onEdit(bond)} />
                   <FaTrash

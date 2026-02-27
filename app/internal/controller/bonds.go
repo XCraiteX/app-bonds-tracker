@@ -1,9 +1,10 @@
-package bonds
+package controller
 
 import (
 	database "app/internal"
 	repository "app/internal/adapter/sqlite"
 	"app/internal/domain/entities"
+	"fmt"
 )
 
 type BondsController struct {
@@ -11,6 +12,7 @@ type BondsController struct {
 }
 
 func (r *BondsController) InsertBond(bond entities.Bond) error {
+	fmt.Println(bond)
 	return r.Repository.Insert(bond)
 }
 

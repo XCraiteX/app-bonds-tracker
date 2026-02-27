@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { entities } from "../../../wailsjs/go/models";
-import { currency } from "@/config";
+// import { currency } from "@/config";
 
 // ICONS
-import { FaMoneyCheck } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa6";
+// import { FaMoneyCheck } from "react-icons/fa";
+// import { FaCheck } from "react-icons/fa6";
 import CalendarCell from "@/features/calendar/ui/calendar.cell";
 import { generateDays, months } from "@/features/calendar/monthes";
 import WeekDays from "@/features/calendar/ui/calendar.week.days";

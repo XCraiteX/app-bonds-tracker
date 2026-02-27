@@ -10,7 +10,11 @@ type BondsRepo struct {
 }
 
 func (r *BondsRepo) Insert(bond entities.Bond) error {
-	_, err := r.Session.Exec("INSERT INTO bonds (name, nominal, coupon, months, day, quantity) VALUES (?, ?, ?, ?, ?, ?)", bond.Name, bond.Nominal, bond.Coupon, bond.Months, bond.Day, bond.Quantity)
+	_, err := r.Session.Exec("INSERT INTO bonds (name, portfolio, nominal, coupon, months, day, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)", bond.Name, bond.Portfolio, bond.Nominal, bond.Coupon, bond.Months, bond.Day, bond.Quantity)
+
+	if err != nil {
+		panic(err)
+	}
 
 	return err
 }
@@ -23,7 +27,7 @@ func (r *BondsRepo) Get() []entities.Bond {
 	for result.Next() {
 		var b entities.Bond
 
-		err := result.Scan(&b.Id, &b.Name, &b.Nominal, &b.Coupon, &b.Months, &b.Day, &b.Quantity)
+		err := result.Scan(&b.Id, &b.Portfolio, &b.Name, &b.Nominal, &b.Coupon, &b.Months, &b.Day, &b.Quantity)
 
 		if err != nil {
 			panic(err)
@@ -35,8 +39,9 @@ func (r *BondsRepo) Get() []entities.Bond {
 	return bonds
 }
 
+
 func (r *BondsRepo) Update(bond entities.Bond) bool {
-	_, err := r.Session.Exec("UPDATE bonds SET name = ?, nominal = ?, coupon = ?, months = ?, day = ?, quantity = ? WHERE id = ?", bond.Name, bond.Nominal, bond.Coupon, bond.Months, bond.Day, bond.Quantity, bond.Id)
+	_, err := r.Session.Exec("UPDATE bonds SET name = ?, portfolio = ?, nominal = ?, coupon = ?, months = ?, day = ?, quantity = ? WHERE id = ?", bond.Name, bond.Portfolio, bond.Nominal, bond.Coupon, bond.Months, bond.Day, bond.Quantity, bond.Id)
 
 	if err != nil {
 		panic(err)

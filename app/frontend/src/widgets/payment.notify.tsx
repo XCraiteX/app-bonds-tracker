@@ -5,9 +5,9 @@ import { entities } from "_/go/models";
 import { IoMdInformationCircle } from "react-icons/io";
 
 export default function PaymentNotify({ bonds }: { bonds: entities.Bond[] }) {
-  const payoutDay = getNearestPayout(bonds, new Date().getMonth(), new Date().getDay());
+  const payoutDay = getNearestPayout(bonds, new Date().getMonth(), new Date().getDate());
   const daysForPayout =
-    getDaysInMonth(new Date().getMonth()) - getNearestPayout(bonds, new Date().getMonth(), new Date().getDay());
+    getDaysInMonth(new Date().getMonth()) - getNearestPayout(bonds, new Date().getMonth(), new Date().getDate());
   const filteredBonds = bonds.filter((b) => b.Day == payoutDay);
 
   return (
@@ -26,8 +26,7 @@ export default function PaymentNotify({ bonds }: { bonds: entities.Bond[] }) {
                 ? "завтра"
                 : daysForPayout == 2
                   ? "послезавтра"
-                  : "через " + daysForPayout}{" "}
-            дн
+                  : "через " + daysForPayout + " дн"}
           </span>
           <span>по бумаге</span>
           <span className="text-blue-500 font-semibold">&quot;{filteredBonds[0].Name}&quot;</span>
