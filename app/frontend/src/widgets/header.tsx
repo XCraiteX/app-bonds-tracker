@@ -9,6 +9,7 @@ import { LuMinimize2 } from "react-icons/lu";
 import { SiGoogleanalytics } from "react-icons/si";
 import { BsBriefcaseFill } from "react-icons/bs";
 import { IoCalendar } from "react-icons/io5";
+import { FaChartPie } from "react-icons/fa";
 import ThemeToggler from "./theme.toggler";
 
 const styles = {
@@ -22,6 +23,11 @@ const links = [
     path: "/",
     name: "Портфель",
     icon: <BsBriefcaseFill />,
+  },
+  {
+    path: "/analytics",
+    name: "Аналитика",
+    icon: <FaChartPie />,
   },
   {
     path: "/calendar",

@@ -29,6 +29,7 @@ func InitSchema() {
 	CREATE TABLE IF NOT EXISTS bonds (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		portfolio INTEGER REFERENCES portfolios (id),
+		company TEXT NULLABLE,
 		name TEXT NOT NULL,
 		nominal REAL NOT NULL,
 		coupon REAL NOT NULL,

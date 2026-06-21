@@ -3,6 +3,7 @@ export namespace entities {
 	export class Bond {
 	    Id?: number;
 	    Portfolio?: number;
+	    Company: string;
 	    Name: string;
 	    Nominal: number;
 	    Coupon: number;
@@ -18,6 +19,7 @@ export namespace entities {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Id = source["Id"];
 	        this.Portfolio = source["Portfolio"];
+	        this.Company = source["Company"];
 	        this.Name = source["Name"];
 	        this.Nominal = source["Nominal"];
 	        this.Coupon = source["Coupon"];

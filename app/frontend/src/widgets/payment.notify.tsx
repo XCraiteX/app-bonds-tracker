@@ -1,5 +1,5 @@
 import { currency } from "@/config";
-import { getDaysInMonth, months } from "@/features/calendar/monthes";
+import { getDaysInMonth } from "@/features/calendar/monthes";
 import { getNearestPayout } from "@/features/payments";
 import { entities } from "_/go/models";
 import { IoMdInformationCircle } from "react-icons/io";

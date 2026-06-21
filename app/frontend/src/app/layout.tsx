@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "../css/custom-scroll.css";
 import Header from "@/widgets/header";
 import { AlertsProvider } from "@/features/alerts/AlertsProvider";
-import Background from "@/widgets/background";
 import ThemeProviders from "@/features/theme/ThemeProvider";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn("font-sans", geist.variable)}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -37,9 +41,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased hide-scroll`}>
         <ThemeProviders>
-          <div className="min-h-screen bg-gradient-to-br from-[#070521] to-black glass:from-white/0 glass:to-white/0">
+          <div className="min-h-screen bg-gradient-to-br from-[#070521] to-black glass:to-background">
             {/* <Background /> */}
             <Header />
             <AlertsProvider>

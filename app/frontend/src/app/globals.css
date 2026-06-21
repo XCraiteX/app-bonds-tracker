@@ -10,10 +10,15 @@
   --muted: #9ca3af;
   --secondary: #9ca3af;
   --foreground: #ffffff;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
 }
 
 :root.glass {
-  --background: rgba(255, 255, 255, 0.08);
+  --background: rgba(255, 255, 255, 0.09);
   --border: rgba(255, 255, 255, 0.1);
   --accent: #24ec56;
   --muted: #9ca3af;
@@ -45,22 +50,22 @@ body {
   --wails-draggable: drag;
 }
 
-::-webkit-scrollbar {
+.hide-scroll::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
 
-::-webkit-scrollbar-track {
+.hide-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0); /* сделай 0.0 для полного скрытия */
+.hide-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0);
   border-radius: 9999px;
-  border: 0px solid transparent; /* чтобы казался тоньше */
+  border: 0px solid transparent;
 }
 
-::-webkit-scrollbar {
+.hide-scroll::-webkit-scrollbar {
   width: 0;
 }
 
@@ -79,4 +84,8 @@ input[type="number"]::-webkit-inner-spin-button {
 /* SELECTION */
 ::selection {
   @apply bg-white/10;
+}
+
+.chart-tooltip {
+  @apply min-w-[180px] px-4 py-3 text-base bg-black/90 border border-white/20 backdrop-blur-[4px] justify-between;
 }

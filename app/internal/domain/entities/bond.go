@@ -3,6 +3,7 @@ package entities
 type Bond struct {
 	Id        *uint16
 	Portfolio *uint16
+	Company   string
 	Name      string
 	Nominal   uint16
 	Coupon    float32

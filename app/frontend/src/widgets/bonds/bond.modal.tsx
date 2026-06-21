@@ -14,6 +14,7 @@ interface BondModalProps {
 export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond, portfolioId }: BondModalProps) {
   const [formData, setFormData] = useState<entities.Bond>({
     Name: "",
+    Company: "",
     Nominal: 0,
     Coupon: 1,
     Day: 25,
@@ -41,6 +42,7 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond, po
   useEffect(() => {
     if (editBond) {
       setFormData({
+        Company: editBond.Company,
         Name: editBond.Name,
         Nominal: editBond.Nominal,
         Coupon: editBond.Coupon,
@@ -52,6 +54,7 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond, po
     } else {
       // Сброс формы для добавления
       setFormData({
+        Company: "",
         Name: "",
         Nominal: 0,
         Coupon: 1,
@@ -115,16 +118,29 @@ export default function BondModal({ isOpen, onClose, onAdd, onEdit, editBond, po
             <h2 className="text-xl font-semibold text-white mb-4">{title}</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-gray-400 text-sm mb-2">Тикер</label>
-                <input
-                  type="text"
-                  value={formData.Name}
-                  onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
-                  className="w-full bg-black/20 rounded-lg px-3 py-2 text-white outline-none focus:ring-1 ring-blue-500/80"
-                  placeholder="Тикер"
-                  required
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Эмитент</label>
+                  <input
+                    type="text"
+                    value={formData.Company}
+                    onChange={(e) => setFormData({ ...formData, Company: e.target.value })}
+                    className="w-full bg-black/20 rounded-lg px-3 py-2 text-white outline-none focus:ring-1 ring-blue-500/80"
+                    placeholder="Эмитент"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-400 text-sm mb-2">Тикер</label>
+                  <input
+                    type="text"
+                    value={formData.Name}
+                    onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+                    className="w-full bg-black/20 rounded-lg px-3 py-2 text-white outline-none focus:ring-1 ring-blue-500/80"
+                    placeholder="Тикер"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
